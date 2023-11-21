@@ -1,5 +1,6 @@
 package com.lcwd.electronic.store.electronicstore.controller;
 
+import com.lcwd.electronic.store.electronicstore.constants.AppConstant;
 import com.lcwd.electronic.store.electronicstore.dtos.PageableResponse;
 import com.lcwd.electronic.store.electronicstore.dtos.UserDto;
 import com.lcwd.electronic.store.electronicstore.helper.ApiResponse;
@@ -66,12 +67,21 @@ public class UserController {
         return new ResponseEntity<>(userById, HttpStatus.OK);
     }
 
+    /**
+     * @auther
+     * @param pageNumber
+     * @param pageSize
+     * @param sortBy
+     * @param sortDir
+     * @return
+     */
+
     @GetMapping("users")
     public ResponseEntity<PageableResponse<UserDto>> getAllUsers(
-            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-            @RequestParam(value = "sortBy", defaultValue = "name", required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
+            @RequestParam(value = "pageNumber", defaultValue = AppConstant.PAGE_NUMBER, required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstant.PAGE_SIZE , required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstant.SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstant.SORT_DIR, required = false) String sortDir
 
     ) {
         logger.info("Entering the request for retrived data for all user");
