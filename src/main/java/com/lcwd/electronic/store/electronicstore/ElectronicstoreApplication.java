@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ElectronicstoreApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ElectronicstoreApplication.class, args);
+    public static void main(String[] args) {
+        SpringApplication.run(ElectronicstoreApplication.class, args);
 //	User u=new User();
 //	u.setUserId();
-	}
+    }
 }

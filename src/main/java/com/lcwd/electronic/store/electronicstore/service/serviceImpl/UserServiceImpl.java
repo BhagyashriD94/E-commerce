@@ -1,7 +1,6 @@
-package com.lcwd.electronic.store.electronicstore.serviceImpl;
+package com.lcwd.electronic.store.electronicstore.service.serviceImpl;
 
 import com.lcwd.electronic.store.electronicstore.constants.AppConstant;
-import com.lcwd.electronic.store.electronicstore.controller.UserController;
 import com.lcwd.electronic.store.electronicstore.dtos.PageableResponse;
 import com.lcwd.electronic.store.electronicstore.dtos.UserDto;
 import com.lcwd.electronic.store.electronicstore.entity.User;
@@ -20,7 +19,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 

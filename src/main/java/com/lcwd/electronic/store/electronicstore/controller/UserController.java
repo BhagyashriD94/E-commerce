@@ -5,7 +5,6 @@ import com.lcwd.electronic.store.electronicstore.dtos.PageableResponse;
 import com.lcwd.electronic.store.electronicstore.dtos.UserDto;
 import com.lcwd.electronic.store.electronicstore.helper.ApiResponse;
 import com.lcwd.electronic.store.electronicstore.service.UserService;
-import com.lcwd.electronic.store.electronicstore.serviceImpl.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +56,7 @@ public class UserController {
      * @param userId
      * @return
      * @author Bhagyashri
-     * @apiNote to
+     * @apiNote to retrived user data by userId from database
      */
     @GetMapping("user/userId/{userId}")
     public ResponseEntity<UserDto> getUserById(@PathVariable String userId) {
@@ -68,18 +67,19 @@ public class UserController {
     }
 
     /**
-     * @auther
      * @param pageNumber
      * @param pageSize
      * @param sortBy
      * @param sortDir
      * @return
+     * @auther Bhagyashri
+     * @apiNote to retrived all user data from database
      */
 
     @GetMapping("users")
     public ResponseEntity<PageableResponse<UserDto>> getAllUsers(
             @RequestParam(value = "pageNumber", defaultValue = AppConstant.PAGE_NUMBER, required = false) int pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = AppConstant.PAGE_SIZE , required = false) int pageSize,
+            @RequestParam(value = "pageSize", defaultValue = AppConstant.PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = AppConstant.SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = AppConstant.SORT_DIR, required = false) String sortDir
 
@@ -90,6 +90,13 @@ public class UserController {
         return new ResponseEntity<>(allUser, HttpStatus.OK);
     }
 
+    /**
+     * @param userId
+     * @return
+     * @auther Bhagyashri
+     * @apiNote to delete user data at given userId in database
+     */
+
     @DeleteMapping("user/userId/{userId}")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable String userId) {
         this.userService.deleteUser(userId);
@@ -99,6 +106,13 @@ public class UserController {
         return new ResponseEntity<ApiResponse>(message, HttpStatus.OK);
     }
 
+    /**
+     * @param email
+     * @return
+     * @author Bhagyashri
+     * @apiNote to retrived user data by email from database
+     */
+
     @GetMapping("user/email/{email}")
     public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) {
         logger.info("Entering the request for retrived data by email");
@@ -106,6 +120,13 @@ public class UserController {
         logger.info("completed the request for retrived data by email");
         return new ResponseEntity<>(userByEmail, HttpStatus.OK);
     }
+
+    /**
+     * @param keyword
+     * @return
+     * @author Bhagyashri
+     * @apiNote to search user data by keyword from database
+     */
 
     @GetMapping("user/keyword/{keyword}")
     public ResponseEntity<List<UserDto>> searchUser(@PathVariable String keyword) {

@@ -16,17 +16,17 @@ import javax.xml.stream.XMLInputFactory;
 public class UserDto {
     private String userId;
     @NotNull
-    @Size(min=2,max=20,message = "name should be minimum 2 character")
+    @Size(min = 2, max = 20, message = "name should be minimum 2 character")
     private String name;
-    @Email(message="Invalid email id")
-//    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\n",message = "Invalid entered")
+    @Email(message = "Invalid email id")
     private String email;
-    @NotBlank(message="password is required")
+    @NotBlank(message = "password is required")
+
     private String password;
-    @NotBlank(message="write something about yourself")
-    @Size(max=1000)
+    @NotBlank(message = "write something about yourself")
+    @Size(max = 1000)
     private String about;
-    @Size(min=4,max=6,message="Invalid gender")
+    @Size(min = 4, max = 6, message = "Invalid gender")
     private String gender;
     @ImageNameValid
     private String imagename;

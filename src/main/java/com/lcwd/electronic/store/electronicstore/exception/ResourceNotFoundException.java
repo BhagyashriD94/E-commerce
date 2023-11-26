@@ -3,12 +3,13 @@ package com.lcwd.electronic.store.electronicstore.exception;
 import lombok.Builder;
 
 @Builder
-public class ResourceNotFoundException extends RuntimeException{
+public class ResourceNotFoundException extends RuntimeException {
 
-    public ResourceNotFoundException(){
+    public ResourceNotFoundException() {
         super("Resource not found");
     }
-    public ResourceNotFoundException(String message){
+
+    public ResourceNotFoundException(String message) {
         super(message);
 
     }
