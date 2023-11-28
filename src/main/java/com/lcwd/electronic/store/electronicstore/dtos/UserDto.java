@@ -21,10 +21,9 @@ public class UserDto {
     @Email(message = "Invalid email id")
     private String email;
     @NotBlank(message = "password is required")
-//    @Pattern(regexp = "^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$\n",
-//            message="password must be 8 char long containing 2 upper case,1 special,2 digit,3 lowercase")
-    @Pattern(regexp="^(?=.[a-z])(?=.[A-Z])(?=.\\\\d)(?=.[@#$%^&+=]).*$",
-            message = "password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&*!])[A-Za-z\\d@#$%^&*!]{8,}$",
+            message = "password must be at least one uppercase letter,lowercase letter, digit, and one special character")
+
     private String password;
     @NotBlank(message = "write something about yourself")
     @Size(max = 1000)
