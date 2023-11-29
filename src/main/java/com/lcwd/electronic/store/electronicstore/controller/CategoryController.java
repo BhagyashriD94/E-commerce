@@ -44,6 +44,12 @@ public class CategoryController {
         PageableResponse<CategoryDto> allCategory = this.categoryService.getAllCategory(pageNumber, pageSize, sortBy, sortDir);
         return new ResponseEntity<>(allCategory,HttpStatus.OK);
     }
+    @DeleteMapping("/category/{categoryId}")
+    public ResponseEntity<ApiResponse> deleteCategory(@PathVariable String categoryId){
+        this.categoryService.deleteCategory(categoryId);
+        ApiResponse apiResponse = ApiResponse.builder().message("category deleted sucessfully").success(true).status(HttpStatus.OK).build();
+        return new ResponseEntity<ApiResponse>(apiResponse,HttpStatus.OK);
+    }
 
 
 
