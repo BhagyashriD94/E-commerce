@@ -16,7 +16,7 @@ public class CategoryDto {
 
     private String categoryId;
     @NotBlank(message="write something in title")
-    @Size(max=10,message = "title containing maximum 10 character")
+    @Size(max=100,message = "title containing maximum 100 character")
     private String title;
     @NotBlank
     @Size(max=1000,message = "write a description in max 1000 charater")
