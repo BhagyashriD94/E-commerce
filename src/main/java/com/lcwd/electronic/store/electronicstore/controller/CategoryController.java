@@ -19,10 +19,15 @@ public class CategoryController {
         CategoryDto categoryDto1 = this.categoryService.createCategory(categoryDto);
      return new ResponseEntity<>(categoryDto1, HttpStatus.CREATED) ;
     }
-
+    @PutMapping("/category/{categoryId}")
     public ResponseEntity<CategoryDto> updateCategory(@Valid @RequestBody CategoryDto categoryDto, @PathVariable String categoryId){
         CategoryDto categoryDto1 = this.categoryService.updateCategory(categoryDto, categoryId);
         return new ResponseEntity<>(categoryDto1,HttpStatus.OK);
+    }
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<CategoryDto> getCategoryById(@PathVariable String categoryId){
+        CategoryDto categoryById = this.categoryService.getCategoryById(categoryId);
+        return new ResponseEntity<>(categoryById,HttpStatus.OK);
     }
 
 
