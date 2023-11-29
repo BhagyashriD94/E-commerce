@@ -1,6 +1,10 @@
 package com.lcwd.electronic.store.electronicstore.controller;
 
+import com.lcwd.electronic.store.electronicstore.constants.AppConstant;
 import com.lcwd.electronic.store.electronicstore.dtos.CategoryDto;
+import com.lcwd.electronic.store.electronicstore.dtos.PageableResponse;
+import com.lcwd.electronic.store.electronicstore.dtos.UserDto;
+import com.lcwd.electronic.store.electronicstore.helper.ApiResponse;
 import com.lcwd.electronic.store.electronicstore.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +33,19 @@ public class CategoryController {
         CategoryDto categoryById = this.categoryService.getCategoryById(categoryId);
         return new ResponseEntity<>(categoryById,HttpStatus.OK);
     }
+    @GetMapping("/categories")
+    public ResponseEntity<PageableResponse<CategoryDto>> getAllUsers(
+            @RequestParam(value = "pageNumber", defaultValue = AppConstant.PAGE_NUMBER, required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstant.PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstant.SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstant.SORT_DIR, required = false) String sortDir
+
+    ) {
+        PageableResponse<CategoryDto> allCategory = this.categoryService.getAllCategory(pageNumber, pageSize, sortBy, sortDir);
+        return new ResponseEntity<>(allCategory,HttpStatus.OK);
+    }
+
+
 
 
 

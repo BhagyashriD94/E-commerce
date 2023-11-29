@@ -13,7 +13,7 @@ public interface CategoryService {
 
     CategoryDto getCategoryById(String categoryId);
 
-    PageableResponse<CategoryDto> getAllCategory();
+    PageableResponse<CategoryDto> getAllCategory(int pageNumber, int pageSize, String sortBy, String sortDir);
 
     void deleteCategory(String categoryId);
 
