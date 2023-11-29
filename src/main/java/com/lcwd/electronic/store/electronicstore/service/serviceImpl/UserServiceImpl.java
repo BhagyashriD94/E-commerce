@@ -12,12 +12,18 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -28,6 +34,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Value("${user.profile.image.path}")
+    private String imagePath;
     Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
@@ -81,6 +89,13 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(String userId) {
         logger.info("Initiated the dao call for delete user data by userId{}:", userId);
         User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(AppConstant.Not_Found));
+        String path = imagePath + user.getImagename();
+        try {
+            Path path1 = Paths.get(path);
+            Files.delete(path1);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
         logger.info("completed the dao call for delete  user data by userId{}:", userId);
         this.userRepository.delete(user);
     }
