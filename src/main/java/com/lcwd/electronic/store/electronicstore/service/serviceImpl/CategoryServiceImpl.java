@@ -1,8 +1,10 @@
 package com.lcwd.electronic.store.electronicstore.service.serviceImpl;
 
+import com.lcwd.electronic.store.electronicstore.constants.AppConstant;
 import com.lcwd.electronic.store.electronicstore.dtos.CategoryDto;
 import com.lcwd.electronic.store.electronicstore.dtos.PageableResponse;
 import com.lcwd.electronic.store.electronicstore.entity.Category;
+import com.lcwd.electronic.store.electronicstore.exception.ResourceNotFoundException;
 import com.lcwd.electronic.store.electronicstore.repository.CategoryRepository;
 import com.lcwd.electronic.store.electronicstore.service.CategoryService;
 import org.modelmapper.ModelMapper;
@@ -30,7 +32,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto updateCategory(CategoryDto categoryDto, String categoryId) {
-        return null;
+        Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException(AppConstant.Not_Found));
+       category.setTitle(categoryDto.getTitle());
+       category.setDescription(categoryDto.getDescription());
+       category.setCoverImage(categoryDto.getCoverImage());
+        Category category1 = this.categoryRepository.save(category);
+        return this.modelMapper.map(category1,CategoryDto.class);
     }
 
     @Override
