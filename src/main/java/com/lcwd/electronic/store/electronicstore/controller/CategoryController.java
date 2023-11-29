@@ -20,11 +20,11 @@ public class CategoryController {
      return new ResponseEntity<>(categoryDto1, HttpStatus.CREATED) ;
     }
 
-//    public ResponseEntity<CategoryDto> updateCategory(@Valid @RequestBody CategoryDto categoryDto, @PathVariable String categoryId){
-//        CategoryDto categoryDto1 = this.categoryService.updateCategory(categoryDto, categoryId);
-//        return new ResponseEntity<>(categoryDto1,HttpStatus.OK);
-//    }
-//
+    public ResponseEntity<CategoryDto> updateCategory(@Valid @RequestBody CategoryDto categoryDto, @PathVariable String categoryId){
+        CategoryDto categoryDto1 = this.categoryService.updateCategory(categoryDto, categoryId);
+        return new ResponseEntity<>(categoryDto1,HttpStatus.OK);
+    }
+
 
 
 
