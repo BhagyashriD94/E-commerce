@@ -151,23 +151,24 @@ public class UserController {
     }
 
     @PostMapping("/image/{userId}")
-    public ResponseEntity<ImageResponce> uploadUserImage(@RequestParam("userImage") MultipartFile image,@PathVariable String userId) throws IOException {
+    public ResponseEntity<ImageResponce> uploadUserImage(@RequestParam("userImage") MultipartFile image, @PathVariable String userId) throws IOException {
         String imagename = fileService.uploadFile(image, imageUploadPath);
         UserDto userById = userService.getUserById(userId);
         userById.setImagename(imagename);
         UserDto userDto = userService.updateUser(userById, userId);
-        ImageResponce imageResponce=ImageResponce.builder().imageName(imagename).message("Image uploaded sucessfully").success(true).status(HttpStatus.CREATED).build();
-        return new ResponseEntity<>(imageResponce,HttpStatus.CREATED);
+        ImageResponce imageResponce = ImageResponce.builder().imageName(imagename).message("Image uploaded sucessfully").success(true).status(HttpStatus.CREATED).build();
+        return new ResponseEntity<>(imageResponce, HttpStatus.CREATED);
     }
+
     @GetMapping("/image/{userId}")
     public void serverUserImage(@PathVariable String userId, HttpServletResponse response) throws IOException {
 
         UserDto user = userService.getUserById(userId);
-        logger.info("User image name: {}",user.getImagename());
+        logger.info("User image name: {}", user.getImagename());
         InputStream resource = fileService.getResource(imageUploadPath, user.getImagename());
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         response.setContentType(MediaType.IMAGE_PNG_VALUE);
-        StreamUtils.copy(resource,response.getOutputStream());
+        StreamUtils.copy(resource, response.getOutputStream());
 
 
     }

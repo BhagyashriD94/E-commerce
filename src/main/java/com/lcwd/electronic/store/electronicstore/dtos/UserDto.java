@@ -23,7 +23,6 @@ public class UserDto {
     @NotBlank(message = "password is required")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&*!])[A-Za-z\\d@#$%^&*!]{8,}$",
             message = "password must be at least one uppercase letter,lowercase letter, digit, and one special character")
-
     private String password;
     @NotBlank(message = "write something about yourself")
     @Size(max = 1000)

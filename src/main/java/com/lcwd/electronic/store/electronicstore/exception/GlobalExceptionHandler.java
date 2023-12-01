@@ -34,12 +34,11 @@ public class GlobalExceptionHandler {
         errorList.stream().forEach(objectError -> {
             String message = objectError.getDefaultMessage();
             String field = ((FieldError) objectError).getField();
-
             response.put(field, message);
         });
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-
     }
+
     @ExceptionHandler(BadApiRequest.class)
     public ResponseEntity<ApiResponse> handleBadApiRequest(BadApiRequest ex) {
         logger.info("Bad api Request");

@@ -9,7 +9,7 @@ public interface CategoryService {
 
     CategoryDto createCategory(CategoryDto categoryDto);
 
-    CategoryDto updateCategory(CategoryDto categoryDto,String categoryId);
+    CategoryDto updateCategory(CategoryDto categoryDto, String categoryId);
 
     CategoryDto getCategoryById(String categoryId);
 
