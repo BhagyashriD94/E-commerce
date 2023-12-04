@@ -49,4 +49,30 @@ public class FileServiceImpl implements FileService {
         InputStream inputstream = new FileInputStream(fullpath);
         return inputstream;
     }
+
+    @Override
+    public String uploadCoverImageFile(MultipartFile file, String path) throws IOException {
+        String originalFilename = file.getOriginalFilename();
+        String coverfilename = UUID.randomUUID().toString();
+        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String coverfilenamewithextension = coverfilename + extension;
+        String fullpathwithcoverfilename = path + File.separator + coverfilenamewithextension;
+        if (extension.equalsIgnoreCase("jpg") || (extension.equalsIgnoreCase("jpg") || (extension.equalsIgnoreCase("jpeg")))) {
+            File folder = new File(path);
+            if (!folder.exists()) {
+            }
+            Files.copy(file.getInputStream(), Paths.get(fullpathwithcoverfilename));
+            return coverfilenamewithextension;
+        } else {
+            throw new BadApiRequest("file with this" + extension + "not allow");
+        }
+
+    }
+
+    @Override
+    public InputStream getCoverImageResource(String path, String name) throws FileNotFoundException {
+        String fullCoverpath = path + File.separator + name;
+        FileInputStream fileInputStream = new FileInputStream(fullCoverpath);
+        return fileInputStream;
+    }
 }

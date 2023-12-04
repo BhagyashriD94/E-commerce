@@ -12,4 +12,8 @@ public interface FileService {
 
     InputStream getResource(String path, String name) throws FileNotFoundException;
 
+    String uploadCoverImageFile(MultipartFile file,String path) throws IOException;
+
+    InputStream getCoverImageResource(String path,String name) throws FileNotFoundException;
+
 }
