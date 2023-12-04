@@ -118,7 +118,7 @@ public class CategoryController {
         return new ResponseEntity<ApiResponse>(apiResponse, HttpStatus.OK);
     }
     @PostMapping("/coverimage/{categoryId}")
-    public ResponseEntity<ImageResponce> uploadCoverImage(@RequestParam("userImage") MultipartFile image, @PathVariable String categoryId) throws IOException {
+    public ResponseEntity<ImageResponce> uploadCoverImage(@RequestParam("coverImage") MultipartFile image, @PathVariable String categoryId) throws IOException {
         String uploadFile = fileService.uploadFile(image, coverimageUploadPath);
         CategoryDto categoryById = categoryService.getCategoryById(categoryId);
         categoryById.setCoverImage(uploadFile);
@@ -126,7 +126,7 @@ public class CategoryController {
         ImageResponce imageResponce = ImageResponce.builder().imageName(uploadFile).message("Image uploaded sucessfully").success(true).status(HttpStatus.CREATED).build();
         return new ResponseEntity<>(imageResponce, HttpStatus.CREATED);
     }
-    @GetMapping("/coverimage/{userId}")
+    @GetMapping("/coverimage/{categoryId}")
     public void servercoverImage(@PathVariable String categoryId, HttpServletResponse response) throws IOException {
 
         CategoryDto categoryById = categoryService.getCategoryById(categoryId);

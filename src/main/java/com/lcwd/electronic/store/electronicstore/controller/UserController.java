@@ -37,6 +37,7 @@ public class UserController {
     @Value("${user.profile.image.path}")
     private String imageUploadPath;
 
+
     /**
      * @param userDto
      * @return
@@ -169,8 +170,6 @@ public class UserController {
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         response.setContentType(MediaType.IMAGE_PNG_VALUE);
         StreamUtils.copy(resource, response.getOutputStream());
-
-
     }
 
 
