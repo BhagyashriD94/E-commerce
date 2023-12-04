@@ -2,25 +2,40 @@ package com.lcwd.electronic.store.electronicstore.controller;
 
 import com.lcwd.electronic.store.electronicstore.constants.AppConstant;
 import com.lcwd.electronic.store.electronicstore.dtos.CategoryDto;
+import com.lcwd.electronic.store.electronicstore.dtos.ImageResponce;
 import com.lcwd.electronic.store.electronicstore.dtos.PageableResponse;
 import com.lcwd.electronic.store.electronicstore.dtos.UserDto;
 import com.lcwd.electronic.store.electronicstore.helper.ApiResponse;
 import com.lcwd.electronic.store.electronicstore.service.CategoryService;
+import com.lcwd.electronic.store.electronicstore.service.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.io.InputStream;
 
 @RestController
 @RequestMapping("/api")
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private FileService fileService;
+    @Value("${category.cover.image.path}")
+    private String coverImageUploadpath;
     Logger logger = LoggerFactory.getLogger(CategoryController.class);
+    @Value("${category.cover.image.path}")
+    private String  coverimageUploadPath;
 
     /**
      * @param categoryDto
@@ -101,6 +116,24 @@ public class CategoryController {
         ApiResponse apiResponse = ApiResponse.builder().message("category deleted sucessfully").success(true).status(HttpStatus.OK).build();
         logger.info("completed the request for deleted data with categoryId:{}", categoryId);
         return new ResponseEntity<ApiResponse>(apiResponse, HttpStatus.OK);
+    }
+    @PostMapping("/coverimage/{categoryId}")
+    public ResponseEntity<ImageResponce> uploadCoverImage(@RequestParam("userImage") MultipartFile image, @PathVariable String categoryId) throws IOException {
+        String uploadFile = fileService.uploadFile(image, coverimageUploadPath);
+        CategoryDto categoryById = categoryService.getCategoryById(categoryId);
+        categoryById.setCoverImage(uploadFile);
+        CategoryDto categoryDto = categoryService.updateCategory(categoryById, categoryId);
+        ImageResponce imageResponce = ImageResponce.builder().imageName(uploadFile).message("Image uploaded sucessfully").success(true).status(HttpStatus.CREATED).build();
+        return new ResponseEntity<>(imageResponce, HttpStatus.CREATED);
+    }
+    @GetMapping("/coverimage/{userId}")
+    public void servercoverImage(@PathVariable String categoryId, HttpServletResponse response) throws IOException {
+
+        CategoryDto categoryById = categoryService.getCategoryById(categoryId);
+        InputStream resource = fileService.getResource(coverimageUploadPath, categoryById.getCoverImage());
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        response.setContentType(MediaType.IMAGE_PNG_VALUE);
+        StreamUtils.copy(resource, response.getOutputStream());
     }
 
 
