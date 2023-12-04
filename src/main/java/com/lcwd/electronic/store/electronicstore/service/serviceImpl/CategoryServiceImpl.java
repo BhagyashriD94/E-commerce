@@ -12,12 +12,17 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,6 +33,8 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Value("${category.cover.image.path}")
+    private String coverImagepath;
 
     Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
@@ -78,8 +85,16 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteCategory(String categoryId) {
         logger.info("Initiating dao call to deleted data with categoryId:{}", categoryId);
         Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException(AppConstant.Not_Found));
+        String path = coverImagepath + category.getCoverImage();
+        try {
+            Path path1 = Paths.get(path);
+            Files.delete(path1);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
         logger.info("completed dao call to deleted data with categoryId:{}", categoryId);
         this.categoryRepository.delete(category);
+
 
     }
 }
