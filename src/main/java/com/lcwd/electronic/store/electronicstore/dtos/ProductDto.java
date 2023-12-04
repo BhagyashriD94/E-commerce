@@ -1,32 +1,32 @@
-package com.lcwd.electronic.store.electronicstore.entity;
+package com.lcwd.electronic.store.electronicstore.dtos;
 
 import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
-@Entity
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "products")
-public class Product {
-    @Id
+public class ProductDto {
+
     private String productId;
-    @Column(name="product_title")
+    @NotBlank
+    @Size(min=2,max=10,message = "title must contain minimum 2 character")
     private String title;
-    @Column(name="product_description")
+    @Size(max=10000,message="description is required")
     private String description;
-    @Column(name="product_price")
+    @NotNull
     private double price;
-    @Column(name="product_quantity")
     private int quantity;
-    @Column(name="product_added_date")
     private Date addedDate;
     private boolean live;
     private boolean stock;
