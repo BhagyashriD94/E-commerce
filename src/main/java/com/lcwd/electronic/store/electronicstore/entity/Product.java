@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -30,6 +31,11 @@ public class Product {
     private Date addedDate;
     private boolean live;
     private boolean stock;
+    @Column(name="descount_price")
+    private double descountprice;
+    @Column(name="product_image")
+    private String productImage;
+
 
 
 }
