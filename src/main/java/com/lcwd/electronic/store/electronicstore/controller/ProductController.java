@@ -4,18 +4,23 @@ import com.lcwd.electronic.store.electronicstore.constants.AppConstant;
 import com.lcwd.electronic.store.electronicstore.dtos.ImageResponce;
 import com.lcwd.electronic.store.electronicstore.dtos.PageableResponse;
 import com.lcwd.electronic.store.electronicstore.dtos.ProductDto;
+import com.lcwd.electronic.store.electronicstore.dtos.UserDto;
 import com.lcwd.electronic.store.electronicstore.helper.ApiResponse;
 import com.lcwd.electronic.store.electronicstore.service.FileService;
 import com.lcwd.electronic.store.electronicstore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.io.InputStream;
 
 @RestController
 @RequestMapping("/api")
@@ -95,6 +100,16 @@ public class ProductController {
         ProductDto updateProduct = productService.updateProduct(productDto, productId);
         ImageResponce responce = ImageResponce.builder().imageName(updateProduct.getProductImage()).message("Image uploaded sucessfully").success(true).status(HttpStatus.CREATED).build();
         return new ResponseEntity<>(responce, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/image/{productId}")
+    public void serverProductImage(@PathVariable String productId, HttpServletResponse response) throws IOException {
+
+        ProductDto productDto = productService.getProductById(productId);
+        InputStream resource = fileservice.getResource(imagePath, productDto.getProductImage());
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        response.setContentType(MediaType.IMAGE_PNG_VALUE);
+        StreamUtils.copy(resource, response.getOutputStream());
     }
 
 
