@@ -9,7 +9,7 @@ public interface ProductService {
 
     ProductDto createProduct(ProductDto productDto);
 
-    ProductDto updateProduct(ProductDto productDto,String productId);
+    ProductDto updateProduct(ProductDto productDto, String productId);
 
     ProductDto getProductById(String productId);
 
@@ -18,8 +18,8 @@ public interface ProductService {
     void deleteProduct(String productId);
 
     PageableResponse<ProductDto> getAllLive(int pageNumber, int pageSize, String sortBy, String sortDir);
-    PageableResponse<ProductDto> searchByTitle(String subTitle,int pageNumber, int pageSize, String sortBy, String sortDir);
 
+    PageableResponse<ProductDto> searchByTitle(String subTitle, int pageNumber, int pageSize, String sortBy, String sortDir);
 
 
 }
