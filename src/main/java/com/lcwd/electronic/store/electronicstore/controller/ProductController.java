@@ -85,17 +85,17 @@ public class ProductController {
         PageableResponse<ProductDto> productDtoPageableResponse = this.productService.searchByTitle(subTitle, pageNumber, pageSize, sortBy, sortDir);
         return new ResponseEntity<>(productDtoPageableResponse, HttpStatus.OK);
     }
-//    @PostMapping("/Image/{productId}")
-//    public ResponseEntity<ImageResponce> uploadProductImage(
-//            @PathVariable String productId,
-//            @RequestParam("productImage") MultipartFile image) throws IOException {
-//        String filename = fileservice.uploadFile(image, imagePath);
-//        ProductDto productDto = productService.getProductById(productId);
-//        productDto.setProductImage(filename);
-//        ProductDto updateProduct = productService.updateProduct(productDto, productId);
-//        ImageResponce responce = ImageResponce.builder().imageName(updateProduct.getProductImage()).message("Image uploaded sucessfully").success(true).status(HttpStatus.CREATED).build();
-//        return new ResponseEntity<>(responce, HttpStatus.CREATED);
-//    }
+    @PostMapping("/Image/{productId}")
+    public ResponseEntity<ImageResponce> uploadProductImage(
+            @PathVariable String productId,
+            @RequestParam("productImage") MultipartFile image) throws IOException {
+        String filename = fileservice.uploadFile(image, imagePath);
+        ProductDto productDto = productService.getProductById(productId);
+        productDto.setProductImage(filename);
+        ProductDto updateProduct = productService.updateProduct(productDto, productId);
+        ImageResponce responce = ImageResponce.builder().imageName(updateProduct.getProductImage()).message("Image uploaded sucessfully").success(true).status(HttpStatus.CREATED).build();
+        return new ResponseEntity<>(responce, HttpStatus.CREATED);
+    }
 
 
 }
