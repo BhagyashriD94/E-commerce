@@ -104,8 +104,15 @@ public class UserServiceTest {
         Mockito.when(userRepository.findAll((Pageable) Mockito.any())).thenReturn(page);
         PageableResponse<UserDto> allUser = userService.getAllUser(1,2,"name","asc");
         Assertions.assertEquals(3,allUser.getContent().size());
-
-
+    }
+    @Test
+    public void getUserByIdTest(){
+        String userId=user.getUserId();
+        Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        UserDto user1 = userService.getUserById(userId);
+        System.out.println(user1.getName());
+        Assertions.assertNotNull(user1);
+        Assertions.assertEquals(user.getName(),user1.getName(),"name not matched");
     }
 
 
