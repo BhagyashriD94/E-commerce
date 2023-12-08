@@ -35,7 +35,7 @@ public class CategoryController {
     private String coverImageUploadpath;
     Logger logger = LoggerFactory.getLogger(CategoryController.class);
     @Value("${category.cover.image.path}")
-    private String  coverimageUploadPath;
+    private String coverimageUploadPath;
 
     /**
      * @param categoryDto
@@ -117,6 +117,15 @@ public class CategoryController {
         logger.info("completed the request for deleted data with categoryId:{}", categoryId);
         return new ResponseEntity<ApiResponse>(apiResponse, HttpStatus.OK);
     }
+
+    /**
+     * @param image
+     * @param categoryId
+     * @return
+     * @throws IOException
+     * @auther Bhagyashri
+     * @apiNote to upload cover image at given categoryId into database
+     */
     @PostMapping("/coverimage/{categoryId}")
     public ResponseEntity<ImageResponce> uploadCoverImage(@RequestParam("coverImage") MultipartFile image, @PathVariable String categoryId) throws IOException {
         String uploadFile = fileService.uploadFile(image, coverimageUploadPath);
@@ -126,6 +135,14 @@ public class CategoryController {
         ImageResponce imageResponce = ImageResponce.builder().imageName(uploadFile).message("Image uploaded sucessfully").success(true).status(HttpStatus.CREATED).build();
         return new ResponseEntity<>(imageResponce, HttpStatus.CREATED);
     }
+
+    /**
+     * @param categoryId
+     * @param response
+     * @throws IOException
+     * @auther Bhagyashri
+     * @apiNote to server coverimage in database by categoryId
+     */
     @GetMapping("/coverimage/{categoryId}")
     public void servercoverImage(@PathVariable String categoryId, HttpServletResponse response) throws IOException {
 
