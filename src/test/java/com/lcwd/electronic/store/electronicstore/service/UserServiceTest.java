@@ -1,5 +1,6 @@
 package com.lcwd.electronic.store.electronicstore.service;
 
+import com.lcwd.electronic.store.electronicstore.dtos.PageableResponse;
 import com.lcwd.electronic.store.electronicstore.dtos.UserDto;
 import com.lcwd.electronic.store.electronicstore.entity.User;
 import com.lcwd.electronic.store.electronicstore.repository.UserRepository;
@@ -17,7 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockBeans;
+import org.springframework.data.domain.*;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -76,5 +80,33 @@ public class UserServiceTest {
         userService.deleteUser(userId);
         Mockito.verify(userRepository,Mockito.times(1)).delete(user);
     }
+    @Test
+    public void getAllUserTest(){
+
+      User user1 =User.builder()
+                .name("shree")
+                .email("shree@gamil.com")
+                .password("sh234")
+                .gender("female")
+                .imagename("shr.png")
+                .about("I am full stack devloper")
+                .build();
+        User user2=User.builder()
+                .name("Rani")
+                .email("Rani@gamil.com")
+                .password("rn234")
+                .gender("female")
+                .imagename("ran.png")
+                .about("I am java devloper and worked as a back end devloper")
+                .build();
+        List<User> userList= Arrays.asList(user,user1,user2);
+        Page<User> page=new PageImpl<>(userList);
+        Mockito.when(userRepository.findAll((Pageable) Mockito.any())).thenReturn(page);
+        PageableResponse<UserDto> allUser = userService.getAllUser(1,2,"name","asc");
+        Assertions.assertEquals(3,allUser.getContent().size());
+
+
+    }
+
 
 }
