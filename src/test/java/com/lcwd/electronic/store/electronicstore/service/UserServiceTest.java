@@ -69,12 +69,12 @@ public class UserServiceTest {
         Assertions.assertNotNull(userDto);
         Assertions.assertEquals(userDto.getName(),updateUser.getName());
     }
-//    @Test
-//    public void deleteUserTest(){
-//        String userId="userIdabc";
-//        Mockito.when(userRepository.findById("userIdabc")).thenReturn(Optional.of(user));
-//        userService.deleteUser(userId);
-//        Mockito.verify(userRepository,Mockito.times(1)).delete(user);
-//    }
+    @Test
+    public void deleteUserTest(){
+        String userId="userIdabc";
+        Mockito.when(userRepository.findById("userIdabc")).thenReturn(Optional.of(user));
+        userService.deleteUser(userId);
+        Mockito.verify(userRepository,Mockito.times(1)).delete(user);
+    }
 
 }
