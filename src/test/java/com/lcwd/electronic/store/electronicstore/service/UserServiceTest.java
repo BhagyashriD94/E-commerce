@@ -17,9 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockBeans;
+
+import java.util.Optional;
 import java.util.UUID;
 
-//@ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class UserServiceTest {
     @MockBean
@@ -51,6 +52,29 @@ public class UserServiceTest {
         Assertions.assertNotNull(user1);
         Assertions.assertEquals("Prachi Parihar",user1.getName());
     }
-
+    @Test
+    public void updateUserTest(){
+        String userId=user.getUserId();
+        UserDto userDto=UserDto.builder()
+                .name("Prachi p")
+                .password("pr234")
+                .gender("female")
+                .imagename("abc.png")
+                .about("this is updated detail for test")
+                .build();
+        Mockito.when(userRepository.findById(Mockito.anyString())).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.save(Mockito.any())).thenReturn(user);
+        UserDto updateUser = userService.updateUser(userDto, userId);
+        System.out.println(updateUser.getName());
+        Assertions.assertNotNull(userDto);
+        Assertions.assertEquals(userDto.getName(),updateUser.getName());
+    }
+//    @Test
+//    public void deleteUserTest(){
+//        String userId="userIdabc";
+//        Mockito.when(userRepository.findById("userIdabc")).thenReturn(Optional.of(user));
+//        userService.deleteUser(userId);
+//        Mockito.verify(userRepository,Mockito.times(1)).delete(user);
+//    }
 
 }
