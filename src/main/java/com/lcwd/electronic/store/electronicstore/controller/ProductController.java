@@ -32,11 +32,25 @@ public class ProductController {
     @Value("${product.image.path}")
     private String imagePath;
 
+    /**
+     * @auther Bhagyashri
+     * @apiNote to save product data into database
+     * @param productDto
+     * @return
+     */
     @PostMapping("/product")
     public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto productDto) {
         ProductDto product = this.productService.createProduct(productDto);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
+
+    /**
+     * @auther Bhagyashri
+     * @apiNote to update product data by productId from database
+     * @param productDto
+     * @param productId
+     * @return
+     */
 
     @PutMapping("/product/{productId}")
     public ResponseEntity<ProductDto> updateProduct(@Valid @RequestBody ProductDto productDto, @PathVariable String productId) {
@@ -44,11 +58,28 @@ public class ProductController {
         return new ResponseEntity<>(updateProduct, HttpStatus.OK);
     }
 
+    /**
+     * @auther Bhagyashri
+     * @apinote to retrived single product data by productId from database
+     * @param productId
+     * @return
+     */
+
     @GetMapping("/product/{productId}")
     public ResponseEntity<ProductDto> getProductById(@PathVariable String productId) {
         ProductDto productById = this.productService.getProductById(productId);
         return new ResponseEntity<>(productById, HttpStatus.OK);
     }
+
+    /**
+     * @auther Bhagyashri
+     * @apiNote to retrived all product data from database
+     * @param pageNumber
+     * @param pageSize
+     * @param sortBy
+     * @param sortDir
+     * @return
+     */
 
     @GetMapping("/products")
     public ResponseEntity<PageableResponse<ProductDto>> getAllProducts(
@@ -61,13 +92,27 @@ public class ProductController {
         return new ResponseEntity<>(allProduct, HttpStatus.OK);
     }
 
+    /**
+     * @auther Bhagyashri
+     * @apiNote to delete product data from database by productId
+     * @param productId
+     * @return
+     */
     @DeleteMapping("/product/{productId}")
     public ResponseEntity<ApiResponse> deleteProduct(@PathVariable String productId) {
         this.productService.deleteProduct(productId);
         ApiResponse apiResponse = ApiResponse.builder().message("product deleted sucessfully").success(true).status(HttpStatus.OK).build();
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
-
+    /**
+     * @auther Bhagyashri
+     * @apiNote to retrived product data of all live product in database
+     * @param pageNumber
+     * @param pageSize
+     * @param sortBy
+     * @param sortDir
+     * @return
+     */
     @GetMapping("/product/allLive")
     public ResponseEntity<PageableResponse<ProductDto>> getAllLive(
             @RequestParam(value = "pageNumber", defaultValue = AppConstant.PAGE_NUMBER, required = false) int pageNumber,
@@ -79,6 +124,16 @@ public class ProductController {
         return new ResponseEntity<>(allLive, HttpStatus.OK);
     }
 
+    /**
+     * @auther Bhagyashri
+     * @apiNote to retrived product data by subTitle in database
+     * @param subTitle
+     * @param pageNumber
+     * @param pageSize
+     * @param sortBy
+     * @param sortDir
+     * @return
+     */
     @GetMapping("/product/search/{subTitle}")
     public ResponseEntity<PageableResponse<ProductDto>> searchByTitlecontaining(
             @PathVariable String subTitle,
@@ -90,6 +145,15 @@ public class ProductController {
         PageableResponse<ProductDto> productDtoPageableResponse = this.productService.searchByTitle(subTitle, pageNumber, pageSize, sortBy, sortDir);
         return new ResponseEntity<>(productDtoPageableResponse, HttpStatus.OK);
     }
+
+    /**
+     * @auther Bhagyashri
+     * @apiNote to upload product image by productId to database
+     * @param productId
+     * @param image
+     * @return
+     * @throws IOException
+     */
     @PostMapping("/Image/{productId}")
     public ResponseEntity<ImageResponce> uploadProductImage(
             @PathVariable String productId,
@@ -102,9 +166,15 @@ public class ProductController {
         return new ResponseEntity<>(responce, HttpStatus.CREATED);
     }
 
+    /**
+     * @auther Bhagyashri
+     * @apiNote to server product image by productId
+     * @param productId
+     * @param response
+     * @throws IOException
+     */
     @GetMapping("/image/{productId}")
     public void serverProductImage(@PathVariable String productId, HttpServletResponse response) throws IOException {
-
         ProductDto productDto = productService.getProductById(productId);
         InputStream resource = fileservice.getResource(imagePath, productDto.getProductImage());
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
