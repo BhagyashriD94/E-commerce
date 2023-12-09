@@ -77,6 +77,7 @@ public class CategoryServiceImpl implements CategoryService {
         Page<Category> page = this.categoryRepository.findAll(p);
         logger.info("Completed dao call to retrived all data");
         PageableResponse<CategoryDto> pageableResponse = Helper.getPageableResponse(page, CategoryDto.class);
+        logger.info("completed dao call to retrived all product live data");
         return pageableResponse;
     }
 
@@ -94,7 +95,5 @@ public class CategoryServiceImpl implements CategoryService {
         }
         logger.info("completed dao call to deleted data with categoryId:{}", categoryId);
         this.categoryRepository.delete(category);
-
-
     }
 }

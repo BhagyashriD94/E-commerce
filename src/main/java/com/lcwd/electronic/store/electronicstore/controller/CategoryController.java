@@ -145,7 +145,6 @@ public class CategoryController {
      */
     @GetMapping("/coverimage/{categoryId}")
     public void servercoverImage(@PathVariable String categoryId, HttpServletResponse response) throws IOException {
-
         CategoryDto categoryById = categoryService.getCategoryById(categoryId);
         InputStream resource = fileService.getResource(coverimageUploadPath, categoryById.getCoverImage());
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);

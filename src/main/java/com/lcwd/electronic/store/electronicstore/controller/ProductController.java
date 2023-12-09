@@ -34,13 +34,13 @@ public class ProductController {
     @Value("${product.image.path}")
     private String imagePath;
 
-    Logger logger= LoggerFactory.getLogger(ProductController.class);
+    Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     /**
-     * @auther Bhagyashri
-     * @apiNote to save product data into database
      * @param productDto
      * @return
+     * @auther Bhagyashri
+     * @apiNote to save product data into database
      */
     @PostMapping("/product")
     public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto productDto) {
@@ -51,11 +51,11 @@ public class ProductController {
     }
 
     /**
-     * @auther Bhagyashri
-     * @apiNote to update product data by productId from database
      * @param productDto
      * @param productId
      * @return
+     * @auther Bhagyashri
+     * @apiNote to update product data by productId from database
      */
 
     @PutMapping("/product/{productId}")
@@ -67,10 +67,10 @@ public class ProductController {
     }
 
     /**
-     * @auther Bhagyashri
-     * @apinote to retrived single product data by productId from database
      * @param productId
      * @return
+     * @auther Bhagyashri
+     * @apinote to retrived single product data by productId from database
      */
 
     @GetMapping("/product/{productId}")
@@ -82,13 +82,13 @@ public class ProductController {
     }
 
     /**
-     * @auther Bhagyashri
-     * @apiNote to retrived all product data from database
      * @param pageNumber
      * @param pageSize
      * @param sortBy
      * @param sortDir
      * @return
+     * @auther Bhagyashri
+     * @apiNote to retrived all product data from database
      */
 
     @GetMapping("/products")
@@ -105,27 +105,28 @@ public class ProductController {
     }
 
     /**
-     * @auther Bhagyashri
-     * @apiNote to delete product data from database by productId
      * @param productId
      * @return
+     * @auther Bhagyashri
+     * @apiNote to delete product data from database by productId
      */
     @DeleteMapping("/product/{productId}")
     public ResponseEntity<ApiResponse> deleteProduct(@PathVariable String productId) {
-        logger.info("Entering the request for deleted data with productId:{}",productId);
+        logger.info("Entering the request for deleted data with productId:{}", productId);
         this.productService.deleteProduct(productId);
         ApiResponse apiResponse = ApiResponse.builder().message("product deleted sucessfully").success(true).status(HttpStatus.OK).build();
-        logger.info("completed the request for deleted data with productId:{}",productId);
+        logger.info("completed the request for deleted data with productId:{}", productId);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
+
     /**
-     * @auther Bhagyashri
-     * @apiNote to retrived product data of all live product in database
      * @param pageNumber
      * @param pageSize
      * @param sortBy
      * @param sortDir
      * @return
+     * @auther Bhagyashri
+     * @apiNote to retrived product data of all live product in database
      */
     @GetMapping("/product/allLive")
     public ResponseEntity<PageableResponse<ProductDto>> getAllLive(
@@ -141,14 +142,14 @@ public class ProductController {
     }
 
     /**
-     * @auther Bhagyashri
-     * @apiNote to retrived product data by subTitle in database
      * @param subTitle
      * @param pageNumber
      * @param pageSize
      * @param sortBy
      * @param sortDir
      * @return
+     * @auther Bhagyashri
+     * @apiNote to retrived product data by subTitle in database
      */
     @GetMapping("/product/search/{subTitle}")
     public ResponseEntity<PageableResponse<ProductDto>> searchByTitlecontaining(
@@ -158,19 +159,19 @@ public class ProductController {
             @RequestParam(value = "sortBy", defaultValue = AppConstant.SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = AppConstant.SORT_DIR, required = false) String sortDir
     ) {
-        logger.info("Entering the request for retrived data by subTitle",subTitle);
+        logger.info("Entering the request for retrived data by subTitle:{}", subTitle);
         PageableResponse<ProductDto> productDtoPageableResponse = this.productService.searchByTitle(subTitle, pageNumber, pageSize, sortBy, sortDir);
-        logger.info("completed the request for retrived data by subTitle",subTitle);
+        logger.info("completed the request for retrived data by subTitle:{}", subTitle);
         return new ResponseEntity<>(productDtoPageableResponse, HttpStatus.OK);
     }
 
     /**
-     * @auther Bhagyashri
-     * @apiNote to upload product image by productId to database
      * @param productId
      * @param image
      * @return
      * @throws IOException
+     * @auther Bhagyashri
+     * @apiNote to upload product image by productId to database
      */
     @PostMapping("/Image/{productId}")
     public ResponseEntity<ImageResponce> uploadProductImage(
@@ -185,11 +186,11 @@ public class ProductController {
     }
 
     /**
-     * @auther Bhagyashri
-     * @apiNote to server product image by productId
      * @param productId
      * @param response
      * @throws IOException
+     * @auther Bhagyashri
+     * @apiNote to server product image by productId
      */
     @GetMapping("/image/{productId}")
     public void serverProductImage(@PathVariable String productId, HttpServletResponse response) throws IOException {
