@@ -43,19 +43,19 @@ public class CategoryServiceTest {
         Assertions.assertEquals("mobile",category1.getTitle());
         Assertions.assertNotNull(category1);
     }
-//    @Test
-//    public void updateCategoryTest(){
-//       String categoryId=category.getCategoryId();
-//        CategoryDto categoryDto = CategoryDto.builder().title("SumsungNote5")
-//                .description("this is latest version of sumsung")
-//                .coverImage("sum.png").build();
-//        Mockito.when(categoryRepository.findById(Mockito.anyString())).thenReturn(Optional.of(category));
-//        Mockito.when(categoryRepository.save(Mockito.any())).thenReturn(category);
-//        CategoryDto categoryDto1 = categoryService.updateCategory(categoryDto, categoryId);
-//        System.out.println(categoryDto1.getTitle());
-//        Assertions.assertNotNull(categoryDto1);
-//        Assertions.assertEquals("SumsungNote5",categoryDto1.getTitle());
-//    }
+    @Test
+    public void updateCategoryTest(){
+       String categoryId=category.getCategoryId();
+        CategoryDto categoryDto = CategoryDto.builder().title("SumsungNote5")
+                .description("this is latest version of sumsung")
+                .coverImage("sum.png").build();
+        Mockito.when(categoryRepository.findById(Mockito.anyString())).thenReturn(Optional.of(category));
+        Mockito.when(categoryRepository.save(Mockito.any())).thenReturn(category);
+        CategoryDto categoryDto1 = categoryService.updateCategory(categoryDto, categoryId);
+        System.out.println(categoryDto1.getTitle());
+        Assertions.assertNotNull(categoryDto1);
+        Assertions.assertEquals("SumsungNote5",categoryDto1.getTitle());
+    }
 //    @Test
 //    public void getCategoryByIdTest(){
 //        String categoryId=category.getCategoryId();
