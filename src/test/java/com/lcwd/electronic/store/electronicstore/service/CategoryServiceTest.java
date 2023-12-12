@@ -56,15 +56,15 @@ public class CategoryServiceTest {
         Assertions.assertNotNull(categoryDto1);
         Assertions.assertEquals("SumsungNote5",categoryDto1.getTitle());
     }
-//    @Test
-//    public void getCategoryByIdTest(){
-//        String categoryId=category.getCategoryId();
-//        Mockito.when(categoryRepository.findById(Mockito.anyString())).thenReturn(Optional.of(category));
-//        CategoryDto categoryById = categoryService.getCategoryById(categoryId);
-//        System.out.println(categoryById);
-//        Assertions.assertEquals("mobile",categoryById.getTitle());
-//
-//    }
+    @Test
+    public void getCategoryByIdTest(){
+        String categoryId=category.getCategoryId();
+        Mockito.when(categoryRepository.findById(Mockito.anyString())).thenReturn(Optional.of(category));
+        CategoryDto categoryById = categoryService.getCategoryById(categoryId);
+        System.out.println(categoryById);
+        Assertions.assertEquals("mobile",categoryById.getTitle());
+
+    }
 //    public void getAllcate
 //
 }
