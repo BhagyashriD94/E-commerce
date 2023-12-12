@@ -130,5 +130,18 @@ public class UserControllerTest {
         String message = apiResponse.getBody().getMessage();
         Assertions.assertEquals("User is deleted successfully", message);
     }
+    @Test
+    public void getUserByEmailTest() throws Exception {
+        String userEmail= user.getEmail();
+        UserDto userDto = this.modelMapper.map(user, UserDto.class);
+        Mockito.when(userService.getUserByEmail(Mockito.anyString())).thenReturn(userDto);
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/apis/user/email/"+userEmail)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(convertObjectToJsonString(user))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").exists());
+    }
 
 }
