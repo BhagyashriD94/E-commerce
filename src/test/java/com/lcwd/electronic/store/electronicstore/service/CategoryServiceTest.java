@@ -93,13 +93,13 @@ public class CategoryServiceTest {
         Assertions.assertEquals(3, size);
 
     }
-//    @Test
-//    public void deletecategoryTest() {
-//        String categoryId = "fhgdk";
-//        Mockito.when(categoryRepository.findById("fhgdk")).thenReturn(Optional.of(category));
-//        categoryService.deleteCategory(categoryId);
-//        Mockito.verify(categoryRepository, Mockito.times(1)).delete(category);
-//    }
+    @Test
+    public void deletecategoryTest() {
+        String categoryId = "fhgdk";
+        Mockito.when(categoryRepository.findById("fhgdk")).thenReturn(Optional.of(category));
+        categoryService.deleteCategory(categoryId);
+        Mockito.verify(categoryRepository, Mockito.times(1)).delete(category);
+    }
 
 
 }
