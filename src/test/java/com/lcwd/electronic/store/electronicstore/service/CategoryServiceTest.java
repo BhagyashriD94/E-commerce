@@ -1,7 +1,10 @@
 package com.lcwd.electronic.store.electronicstore.service;
 
 import com.lcwd.electronic.store.electronicstore.dtos.CategoryDto;
+import com.lcwd.electronic.store.electronicstore.dtos.PageableResponse;
+import com.lcwd.electronic.store.electronicstore.dtos.UserDto;
 import com.lcwd.electronic.store.electronicstore.entity.Category;
+import com.lcwd.electronic.store.electronicstore.entity.User;
 import com.lcwd.electronic.store.electronicstore.repository.CategoryRepository;
 import com.lcwd.electronic.store.electronicstore.service.serviceImpl.CategoryServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -12,7 +15,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -65,6 +73,33 @@ public class CategoryServiceTest {
         Assertions.assertEquals("mobile",categoryById.getTitle());
 
     }
-//    public void getAllcate
-//
+    @Test
+    public void getAllCateoryTest(){
+         Category category1=Category.builder()
+                .categoryId(UUID.randomUUID().toString())
+                .title("Tv")
+                .description( "this category contain mobile related product")
+                .coverImage("mob.png").build();
+         Category category2=Category.builder()
+                .categoryId(UUID.randomUUID().toString())
+                .title("Refrigerator")
+                .description( "this category contain mobile related product")
+                .coverImage("mob.png").build();
+        List<Category> CategoryList = Arrays.asList(category,category1,category2);
+        Page<Category> page = new PageImpl<>(CategoryList);
+        Mockito.when(categoryRepository.findAll((Pageable) Mockito.any())).thenReturn(page);
+        PageableResponse<CategoryDto> allCategory = categoryService.getAllCategory(1, 2, "title", "asc");
+        int size = allCategory.getContent().size();
+        Assertions.assertEquals(3, size);
+
+    }
+//    @Test
+//    public void deletecategoryTest() {
+//        String categoryId = "fhgdk";
+//        Mockito.when(categoryRepository.findById("fhgdk")).thenReturn(Optional.of(category));
+//        categoryService.deleteCategory(categoryId);
+//        Mockito.verify(categoryRepository, Mockito.times(1)).delete(category);
+//    }
+
+
 }
