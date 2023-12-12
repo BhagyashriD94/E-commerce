@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lcwd.electronic.store.electronicstore.dtos.PageableResponse;
 import com.lcwd.electronic.store.electronicstore.dtos.UserDto;
 import com.lcwd.electronic.store.electronicstore.entity.User;
+import com.lcwd.electronic.store.electronicstore.helper.ApiResponse;
 import com.lcwd.electronic.store.electronicstore.service.UserService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -14,12 +16,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Arrays;
 import java.util.UUID;
 
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,6 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTest {
     @MockBean
     private UserService userService;
+    @Autowired
+    private UserController userController;
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
@@ -113,14 +119,16 @@ public class UserControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
-
-
-//    public void deleteUserTest(){
-//        String userId="123";
-//        UserDto userDto = this.modelMapper.map(user, UserDto.class);
-//        Mockito.when(userService.deleteUser(Mockito.anyString())).thenReturn(userDto);
-//
-//
-//    }
+    @Test
+    public void deleteUserTest() throws Exception {
+        String userId="123";
+        doNothing().when(userService).deleteUser(userId);
+        ResponseEntity<ApiResponse> apiResponse = userController.deleteUser(userId);
+        this.mockMvc.perform(MockMvcRequestBuilders.delete("/apis/user/userId/"+userId)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        String message = apiResponse.getBody().getMessage();
+        Assertions.assertEquals("User is deleted successfully", message);
+    }
 
 }
