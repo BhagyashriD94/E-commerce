@@ -1,6 +1,7 @@
 package com.lcwd.electronic.store.electronicstore.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lcwd.electronic.store.electronicstore.dtos.PageableResponse;
 import com.lcwd.electronic.store.electronicstore.dtos.UserDto;
 import com.lcwd.electronic.store.electronicstore.entity.User;
 import com.lcwd.electronic.store.electronicstore.service.UserService;
@@ -16,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -67,7 +69,7 @@ public class UserControllerTest {
         }
     }
     @Test
-    public void updateUser() throws Exception {
+    public void updateUserTest() throws Exception {
         String userId= user.getUserId();
         UserDto userDto = modelMapper.map(user, UserDto.class);
         Mockito.when(userService.updateUser(Mockito.any(),Mockito.anyString())).thenReturn(userDto);
@@ -80,7 +82,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.name").exists());
     }
     @Test
-    public void getUserById() throws Exception {
+    public void getUserByIdTest() throws Exception {
         String userId= user.getUserId();
         UserDto userDto = this.modelMapper.map(user, UserDto.class);
         Mockito.when(userService.getUserById(Mockito.anyString())).thenReturn(userDto);
@@ -92,4 +94,33 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").exists());
     }
+    @Test
+    public void getAllUserTest() throws Exception {
+        UserDto obj1 = UserDto.builder().name("shree").email("Shree@gmail.com").password("Shree@123").about("Testing").build();
+        UserDto obj2 = UserDto.builder().name("Renu").email("Shree@gmail.com").password("Shree@123").about("Testing").build();
+        UserDto obj3 = UserDto.builder().name("prachi").email("Shree@gmail.com").password("Shree@123").about("Testing").build();
+        UserDto obj4 = UserDto.builder().name("Anu").email("Shree@gmail.com").password("Shree@123").about("Testing").build();
+        PageableResponse<UserDto> pageableResponse= new PageableResponse<>();
+        pageableResponse.setContent(Arrays.asList(obj1,obj2,obj3,obj4));
+        pageableResponse.setLastpage(false);
+        pageableResponse.setPageSize(10);
+        pageableResponse.setPageNumber(100);
+        pageableResponse.setTotalElements(1000l);
+        Mockito.when(userService.getAllUser(Mockito.anyInt(),Mockito.anyInt(),Mockito.anyString(),Mockito.anyString())).thenReturn(pageableResponse);
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/apis/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+
+//    public void deleteUserTest(){
+//        String userId="123";
+//        UserDto userDto = this.modelMapper.map(user, UserDto.class);
+//        Mockito.when(userService.deleteUser(Mockito.anyString())).thenReturn(userDto);
+//
+//
+//    }
+
 }
