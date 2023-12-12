@@ -66,19 +66,19 @@ public class UserControllerTest {
             return null;
         }
     }
-//    @Test
-//    public void updateUser() throws Exception {
-//        String userId= user.getUserId();
-//        UserDto userDto = modelMapper.map(user, UserDto.class);
-//        Mockito.when(userService.updateUser(Mockito.any(),Mockito.anyString())).thenReturn(userDto);
-//        this.mockMvc.perform(MockMvcRequestBuilders.put("/apis/user/userId/"+userId)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(convertObjectToJsonString(user))
-//                .accept(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.name").exists());
-//    }
+    @Test
+    public void updateUser() throws Exception {
+        String userId= user.getUserId();
+        UserDto userDto = modelMapper.map(user, UserDto.class);
+        Mockito.when(userService.updateUser(Mockito.any(),Mockito.anyString())).thenReturn(userDto);
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/apis/user/userId/"+userId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(convertObjectToJsonString(user))
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").exists());
+    }
 //    @Test
 //    public void getUserById() throws Exception {
 //        String userId= user.getUserId();
