@@ -67,7 +67,6 @@ public class CategoryControllerTest {
         Mockito.when(categoryService.updateCategory(Mockito.any(), Mockito.anyString())).thenReturn(categoryDto);
         this.mockMvc.perform(MockMvcRequestBuilders.put("/api/category/" + categoryId).contentType(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(convertObjectToJsonString(category)).accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.title").exists());
     }
-
     @Test
     public void getAllCategoryTest() throws Exception {
         CategoryDto dto1 = CategoryDto.builder().title("Tv").description("this is anroid Tv of Haier company").coverImage("tv.png").build();
@@ -81,6 +80,23 @@ public class CategoryControllerTest {
         pageableResponse.setPageNumber(100);
         pageableResponse.setTotalElements(1000l);
         Mockito.when(categoryService.getAllCategory(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(), Mockito.anyString())).thenReturn(pageableResponse);
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/categories").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/categories")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+    @Test
+    public void getCategoryByIdTest() throws Exception {
+        String categoryId = category.getCategoryId();
+        CategoryDto categoryDto = this.modelMapper.map(category, CategoryDto.class);
+        Mockito.when(categoryService.getCategoryById(Mockito.anyString())).thenReturn(categoryDto);
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/category/"+categoryId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(convertObjectToJsonString(category))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").exists());
     }
 }
