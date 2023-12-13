@@ -68,7 +68,17 @@ public class ProductServiceTest {
         Assertions.assertNotNull(updateProduct);
         Assertions.assertEquals("RedmiNote6",updateProduct.getTitle());
     }
+    @Test
+    public void getProductByIdTest(){
+        String productId = product.getProductId();
+        Mockito.when(productRepository.findById(Mockito.anyString())).thenReturn(Optional.of(product));
+        ProductDto productDto = productService.getProductById(productId);
+        System.out.println(productDto);
+        Assertions.assertEquals("iphone",productDto.getTitle());
+    }
 
 
 
-}
+
+
+    }
