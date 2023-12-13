@@ -1,7 +1,9 @@
 package com.lcwd.electronic.store.electronicstore.service;
 
 import com.lcwd.electronic.store.electronicstore.dtos.CategoryDto;
+import com.lcwd.electronic.store.electronicstore.dtos.PageableResponse;
 import com.lcwd.electronic.store.electronicstore.dtos.ProductDto;
+import com.lcwd.electronic.store.electronicstore.entity.Category;
 import com.lcwd.electronic.store.electronicstore.entity.Product;
 import com.lcwd.electronic.store.electronicstore.repository.ProductRepository;
 import com.lcwd.electronic.store.electronicstore.service.serviceImpl.ProductServiceImpl;
@@ -13,7 +15,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -76,6 +83,36 @@ public class ProductServiceTest {
         System.out.println(productDto);
         Assertions.assertEquals("iphone",productDto.getTitle());
     }
+    @Test
+    public void getAllProductest(){
+      Product  product1=Product.builder()
+                .productId(UUID.randomUUID().toString())
+                .title("Motrolo")
+                .description("this phone havin good camera and 5G features")
+                .price(70000.00)
+                .quantity(2)
+                .descountprice(10000.00)
+                .stock(true)
+                .live(true)
+                .productImage("ipn.png").build();
+       Product product2=Product.builder()
+                .productId(UUID.randomUUID().toString())
+                .title("Nokia 7")
+                .description("this phone havin good camera and 5G features")
+                .price(70000.00)
+                .quantity(2)
+                .descountprice(10000.00)
+                .stock(true)
+                .live(true)
+                .productImage("ipn.png").build();
+        List<Product> list = Arrays.asList(product, product1, product2);
+        Page<Product> page = new PageImpl<>(list);
+        Mockito.when(productRepository.findAll((Pageable) Mockito.any())).thenReturn(page);
+        PageableResponse<ProductDto> allProduct = productService.getAllProduct(1, 2, "title", "asc");
+        int size = allProduct.getContent().size();
+        Assertions.assertEquals(3, size);
+    }
+
 
 
 
