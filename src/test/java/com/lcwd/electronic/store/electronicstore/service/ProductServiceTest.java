@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @SpringBootTest
@@ -47,6 +48,27 @@ public class ProductServiceTest {
         Assertions.assertEquals("iphone",product1.getTitle());
         Assertions.assertNotNull(product1);
     }
+    @Test
+    public void updateproductTest(){
+        String productId = product.getProductId();
+        ProductDto productDto = ProductDto.builder()
+                .productId(UUID.randomUUID().toString())
+                .title("RedmiNote6")
+                .description("this phone havin good camera and 5G features")
+                .price(60000.00)
+                .quantity(2)
+                .descountprice(15000.00)
+                .stock(true)
+                .live(true)
+                .productImage("ipn.png").build();
+        Mockito.when(productRepository.findById(Mockito.anyString())).thenReturn(Optional.of(product));
+        Mockito.when(productRepository.save(Mockito.any())).thenReturn(product);
+        ProductDto updateProduct = productService.updateProduct(productDto, productId);
+        System.out.println(updateProduct.getTitle());
+        Assertions.assertNotNull(updateProduct);
+        Assertions.assertEquals("RedmiNote6",updateProduct.getTitle());
+    }
+
 
 
 }
