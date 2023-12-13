@@ -1,6 +1,7 @@
 package com.lcwd.electronic.store.electronicstore.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lcwd.electronic.store.electronicstore.dtos.PageableResponse;
 import com.lcwd.electronic.store.electronicstore.dtos.ProductDto;
 import com.lcwd.electronic.store.electronicstore.dtos.UserDto;
 import com.lcwd.electronic.store.electronicstore.entity.Product;
@@ -17,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -95,6 +97,25 @@ public class ProductControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").exists());
+    }
+    @Test
+    public void getAllProductTest() throws Exception {
+        ProductDto dto1 = ProductDto.builder().title("sumsung").description("this is latest version of sumsung").price(75000.00).descountprice(15000.00).quantity(1).live(true).stock(true).productImage("sum.png").build();
+        ProductDto dto2 = ProductDto.builder().title("Nokia.4").description("this is latest version of sumsung").price(75000.00).descountprice(15000.00).quantity(1).live(true).stock(true).productImage("sum.png").build();
+        ProductDto dto3 = ProductDto.builder().title("RedmiNote5").description("this is latest version of sumsung").price(75000.00).descountprice(15000.00).quantity(1).live(true).stock(true).productImage("sum.png").build();
+        ProductDto dto4 = ProductDto.builder().title("RedmiNote6pro").description("this is latest version of sumsung").price(75000.00).descountprice(15000.00).quantity(1).live(true).stock(true).productImage("sum.png").build();
+        PageableResponse<ProductDto> pageableResponse= new PageableResponse<>();
+        pageableResponse.setContent(Arrays.asList(dto1,dto2,dto3,dto4));
+        pageableResponse.setLastpage(false);
+        pageableResponse.setPageSize(10);
+        pageableResponse.setPageNumber(100);
+        pageableResponse.setTotalElements(1000l);
+        Mockito.when(productService.getAllProduct(Mockito.anyInt(),Mockito.anyInt(),Mockito.anyString(),Mockito.anyString())).thenReturn(pageableResponse);
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                        .andDo(print())
+                        .andExpect(status().isOk());
     }
 
 }
