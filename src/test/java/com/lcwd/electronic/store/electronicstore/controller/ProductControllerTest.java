@@ -56,6 +56,7 @@ public class ProductControllerTest {
                 .live(true)
                 .productImage("ipn.png").build();
     }
+
     @Test
     public void createProductTest() throws Exception {
         ProductDto productDto = modelMapper.map(product, ProductDto.class);
@@ -68,20 +69,22 @@ public class ProductControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.title").exists());
     }
-    private String convertObjectToJsonString(Object product){
-        try{
+
+    private String convertObjectToJsonString(Object product) {
+        try {
             return new ObjectMapper().writeValueAsString(product);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
+
     @Test
     public void updateProductTest() throws Exception {
         String productId = product.getProductId();
         ProductDto productDto = modelMapper.map(product, ProductDto.class);
-        Mockito.when(productService.updateProduct(Mockito.any(),Mockito.anyString())).thenReturn(productDto);
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/api/product/"+productId)
+        Mockito.when(productService.updateProduct(Mockito.any(), Mockito.anyString())).thenReturn(productDto);
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/api/product/" + productId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(convertObjectToJsonString(product))
                         .accept(MediaType.APPLICATION_JSON))
@@ -89,12 +92,13 @@ public class ProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").exists());
     }
+
     @Test
     public void getProductByIdTest() throws Exception {
         String productId = product.getProductId();
         ProductDto productDto = this.modelMapper.map(product, ProductDto.class);
         Mockito.when(productService.getProductById(Mockito.anyString())).thenReturn(productDto);
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/product/"+productId)
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/product/" + productId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(convertObjectToJsonString(product))
                         .accept(MediaType.APPLICATION_JSON))
@@ -102,35 +106,56 @@ public class ProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").exists());
     }
+
     @Test
     public void getAllProductTest() throws Exception {
         ProductDto dto1 = ProductDto.builder().title("sumsung").description("this is latest version of sumsung").price(75000.00).descountprice(15000.00).quantity(1).live(true).stock(true).productImage("sum.png").build();
         ProductDto dto2 = ProductDto.builder().title("Nokia.4").description("this is latest version of sumsung").price(75000.00).descountprice(15000.00).quantity(1).live(true).stock(true).productImage("sum.png").build();
         ProductDto dto3 = ProductDto.builder().title("RedmiNote5").description("this is latest version of sumsung").price(75000.00).descountprice(15000.00).quantity(1).live(true).stock(true).productImage("sum.png").build();
         ProductDto dto4 = ProductDto.builder().title("RedmiNote6pro").description("this is latest version of sumsung").price(75000.00).descountprice(15000.00).quantity(1).live(true).stock(true).productImage("sum.png").build();
-        PageableResponse<ProductDto> pageableResponse= new PageableResponse<>();
-        pageableResponse.setContent(Arrays.asList(dto1,dto2,dto3,dto4));
+        PageableResponse<ProductDto> pageableResponse = new PageableResponse<>();
+        pageableResponse.setContent(Arrays.asList(dto1, dto2, dto3, dto4));
         pageableResponse.setLastpage(false);
         pageableResponse.setPageSize(10);
         pageableResponse.setPageNumber(100);
         pageableResponse.setTotalElements(1000l);
-        Mockito.when(productService.getAllProduct(Mockito.anyInt(),Mockito.anyInt(),Mockito.anyString(),Mockito.anyString())).thenReturn(pageableResponse);
+        Mockito.when(productService.getAllProduct(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(), Mockito.anyString())).thenReturn(pageableResponse);
         this.mockMvc.perform(MockMvcRequestBuilders.get("/api/products")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                        .andDo(print())
-                        .andExpect(status().isOk());
+                .andDo(print())
+                .andExpect(status().isOk());
     }
+
     @Test
     public void deleteProductTest() throws Exception {
-        String productId="ghkfb";
+        String productId = "ghkfb";
         doNothing().when(productService).deleteProduct(productId);
         ResponseEntity<ApiResponse> response = productController.deleteProduct(productId);
-        this.mockMvc.perform(MockMvcRequestBuilders.delete("/api/product/"+productId)
+        this.mockMvc.perform(MockMvcRequestBuilders.delete("/api/product/" + productId)
                         .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk());
+                .andExpect(status().isOk());
         String message = response.getBody().getMessage();
         Assertions.assertEquals("product deleted sucessfully", message);
+    }
+    @Test
+    public void getAllLiveProductTest() throws Exception {
+        ProductDto dto1 = ProductDto.builder().title("sumsung").description("this is latest version of sumsung").price(75000.00).descountprice(15000.00).quantity(1).live(true).stock(true).productImage("sum.png").build();
+        ProductDto dto2 = ProductDto.builder().title("Nokia.4").description("this is latest version of sumsung").price(75000.00).descountprice(15000.00).quantity(1).live(true).stock(true).productImage("sum.png").build();
+        ProductDto dto3 = ProductDto.builder().title("RedmiNote5").description("this is latest version of sumsung").price(75000.00).descountprice(15000.00).quantity(1).live(true).stock(true).productImage("sum.png").build();
+        ProductDto dto4 = ProductDto.builder().title("RedmiNote6pro").description("this is latest version of sumsung").price(75000.00).descountprice(15000.00).quantity(1).live(true).stock(true).productImage("sum.png").build();
+        PageableResponse<ProductDto> pageableResponse = new PageableResponse<>();
+        pageableResponse.setContent(Arrays.asList(dto1, dto2, dto3, dto4));
+        pageableResponse.setLastpage(false);
+        pageableResponse.setPageSize(10);
+        pageableResponse.setPageNumber(100);
+        pageableResponse.setTotalElements(1000l);
+        Mockito.when(productService.getAllLive(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(), Mockito.anyString())).thenReturn(pageableResponse);
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/product/allLive")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
 }
