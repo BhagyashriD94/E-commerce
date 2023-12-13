@@ -67,18 +67,18 @@ public class CategoryControllerTest {
             return null;
         }}
 
-//        @Test
-//        public void updateCategoryTest () throws Exception {
-//            String categoryId = category.getCategoryId();
-//            CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
-//            Mockito.when(categoryService.updateCategory(Mockito.any(), Mockito.anyString())).thenReturn(categoryDto);
-//            this.mockMvc.perform(MockMvcRequestBuilders.put("/api/category/" + categoryId)
-//                            .contentType(MediaType.APPLICATION_JSON)
-//                            .contentType(MediaType.APPLICATION_JSON)
-//                            .content(convertObjectToJsonString(category))
-//                            .accept(MediaType.APPLICATION_JSON))
-//                    .andDo(print())
-//                    .andExpect(status().isOk())
-//                    .andExpect(jsonPath("$.title").exists());
-//        }
+        @Test
+        public void updateCategoryTest () throws Exception {
+            String categoryId = category.getCategoryId();
+            CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
+            Mockito.when(categoryService.updateCategory(Mockito.any(), Mockito.anyString())).thenReturn(categoryDto);
+            this.mockMvc.perform(MockMvcRequestBuilders.put("/api/category/" + categoryId)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(convertObjectToJsonString(category))
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.title").exists());
+        }
     }
