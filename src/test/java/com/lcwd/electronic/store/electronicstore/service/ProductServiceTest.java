@@ -117,7 +117,6 @@ public class ProductServiceTest {
         int size = allProduct.getContent().size();
         Assertions.assertEquals(3, size);
     }
-
     @Test
     public void deleteproductTest() {
         String productId = "fhgdk";
@@ -125,6 +124,32 @@ public class ProductServiceTest {
         productService.deleteProduct(productId);
         Mockito.verify(productRepository, Mockito.times(1)).delete(product);
     }
-
-
+    @Test
+    public void getAllLiveproductTest(){
+        Product product1 = Product.builder()
+                .productId(UUID.randomUUID().toString())
+                .title("Motrolo")
+                .description("this phone havin good camera and 5G features")
+                .price(70000.00)
+                .quantity(2)
+                .descountprice(10000.00)
+                .stock(true)
+                .live(true)
+                .productImage("ipn.png").build();
+        Product product2 = Product.builder()
+                .productId(UUID.randomUUID().toString())
+                .title("Nokia 7")
+                .description("this phone havin good camera and 5G features")
+                .price(70000.00)
+                .quantity(2)
+                .descountprice(10000.00)
+                .stock(true)
+                .live(true)
+                .productImage("ipn.png").build();
+        List<Product> productlist=Arrays.asList(product,product1,product2);
+        Page<Product> page = new PageImpl<>(productlist);
+        Mockito.when(productRepository.findByLiveTrue((Pageable) Mockito.any())).thenReturn(page);
+        PageableResponse<ProductDto> allLive = productService.getAllLive(1,2,"title","desc");
+        Assertions.assertEquals(3,allLive.getContent().size());
+    }
 }
