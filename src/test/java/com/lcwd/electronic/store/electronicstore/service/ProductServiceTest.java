@@ -33,9 +33,10 @@ public class ProductServiceTest {
     @Autowired
     private ModelMapper modelMapper;
     Product product;
+
     @BeforeEach
-    public void init(){
-        product=Product.builder()
+    public void init() {
+        product = Product.builder()
                 .productId(UUID.randomUUID().toString())
                 .title("iphone")
                 .description("this phone havin good camera and 5G features")
@@ -46,17 +47,19 @@ public class ProductServiceTest {
                 .live(true)
                 .productImage("ipn.png").build();
     }
+
     @Test
-    public void createProductTest(){
+    public void createProductTest() {
         String productId = product.getProductId();
         Mockito.when(productRepository.save(Mockito.any())).thenReturn(product);
         ProductDto product1 = productService.createProduct(modelMapper.map(product, ProductDto.class));
         System.out.println(product1.getTitle());
-        Assertions.assertEquals("iphone",product1.getTitle());
+        Assertions.assertEquals("iphone", product1.getTitle());
         Assertions.assertNotNull(product1);
     }
+
     @Test
-    public void updateproductTest(){
+    public void updateproductTest() {
         String productId = product.getProductId();
         ProductDto productDto = ProductDto.builder()
                 .productId(UUID.randomUUID().toString())
@@ -73,19 +76,21 @@ public class ProductServiceTest {
         ProductDto updateProduct = productService.updateProduct(productDto, productId);
         System.out.println(updateProduct.getTitle());
         Assertions.assertNotNull(updateProduct);
-        Assertions.assertEquals("RedmiNote6",updateProduct.getTitle());
+        Assertions.assertEquals("RedmiNote6", updateProduct.getTitle());
     }
+
     @Test
-    public void getProductByIdTest(){
+    public void getProductByIdTest() {
         String productId = product.getProductId();
         Mockito.when(productRepository.findById(Mockito.anyString())).thenReturn(Optional.of(product));
         ProductDto productDto = productService.getProductById(productId);
         System.out.println(productDto);
-        Assertions.assertEquals("iphone",productDto.getTitle());
+        Assertions.assertEquals("iphone", productDto.getTitle());
     }
+
     @Test
-    public void getAllProductest(){
-      Product  product1=Product.builder()
+    public void getAllProductest() {
+        Product product1 = Product.builder()
                 .productId(UUID.randomUUID().toString())
                 .title("Motrolo")
                 .description("this phone havin good camera and 5G features")
@@ -95,7 +100,7 @@ public class ProductServiceTest {
                 .stock(true)
                 .live(true)
                 .productImage("ipn.png").build();
-       Product product2=Product.builder()
+        Product product2 = Product.builder()
                 .productId(UUID.randomUUID().toString())
                 .title("Nokia 7")
                 .description("this phone havin good camera and 5G features")
@@ -113,9 +118,13 @@ public class ProductServiceTest {
         Assertions.assertEquals(3, size);
     }
 
-
-
-
-
-
+    @Test
+    public void deleteproductTest() {
+        String productId = "fhgdk";
+        Mockito.when(productRepository.findById("fhgdk")).thenReturn(Optional.of(product));
+        productService.deleteProduct(productId);
+        Mockito.verify(productRepository, Mockito.times(1)).delete(product);
     }
+
+
+}
