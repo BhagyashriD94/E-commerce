@@ -5,7 +5,9 @@ import com.lcwd.electronic.store.electronicstore.dtos.CategoryDto;
 import com.lcwd.electronic.store.electronicstore.dtos.PageableResponse;
 import com.lcwd.electronic.store.electronicstore.dtos.UserDto;
 import com.lcwd.electronic.store.electronicstore.entity.Category;
+import com.lcwd.electronic.store.electronicstore.helper.ApiResponse;
 import com.lcwd.electronic.store.electronicstore.service.CategoryService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,12 +17,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Arrays;
 import java.util.UUID;
 
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -98,5 +102,16 @@ public class CategoryControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").exists());
+    }
+    @Test
+    public void deleteCategoryTest() throws Exception {
+        String categoryId="hgdghhkf";
+        doNothing().when(categoryService).deleteCategory(categoryId);
+        ResponseEntity<ApiResponse> apiResponse = categoryController.deleteCategory(categoryId);
+        this.mockMvc.perform(MockMvcRequestBuilders.delete("/api/category/"+categoryId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk());
+        String message = apiResponse.getBody().getMessage();
+        Assertions.assertEquals("category deleted sucessfully", message);
     }
 }
