@@ -69,6 +69,19 @@ public class ProductControllerTest {
             e.printStackTrace();
             return null;
         }
-
     }
+    @Test
+    public void updateProductTest() throws Exception {
+        String productId = product.getProductId();
+        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        Mockito.when(productService.updateProduct(Mockito.any(),Mockito.anyString())).thenReturn(productDto);
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/api/product/"+productId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(convertObjectToJsonString(product))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").exists());
+    }
+
 }
