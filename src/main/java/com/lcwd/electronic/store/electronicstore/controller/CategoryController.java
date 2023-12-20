@@ -1,13 +1,11 @@
 package com.lcwd.electronic.store.electronicstore.controller;
 
 import com.lcwd.electronic.store.electronicstore.constants.AppConstant;
-import com.lcwd.electronic.store.electronicstore.dtos.CategoryDto;
-import com.lcwd.electronic.store.electronicstore.dtos.ImageResponce;
-import com.lcwd.electronic.store.electronicstore.dtos.PageableResponse;
-import com.lcwd.electronic.store.electronicstore.dtos.UserDto;
+import com.lcwd.electronic.store.electronicstore.dtos.*;
 import com.lcwd.electronic.store.electronicstore.helper.ApiResponse;
 import com.lcwd.electronic.store.electronicstore.service.CategoryService;
 import com.lcwd.electronic.store.electronicstore.service.FileService;
+import com.lcwd.electronic.store.electronicstore.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +31,8 @@ public class CategoryController {
     private FileService fileService;
     @Value("${category.cover.image.path}")
     private String coverImageUploadpath;
+    @Autowired
+    private ProductService productService;
     Logger logger = LoggerFactory.getLogger(CategoryController.class);
     @Value("${category.cover.image.path}")
     private String coverimageUploadPath;
@@ -150,6 +150,12 @@ public class CategoryController {
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         response.setContentType(MediaType.IMAGE_PNG_VALUE);
         StreamUtils.copy(resource, response.getOutputStream());
+    }
+
+    @PostMapping("/categories/{categoryId}/products")
+    public ResponseEntity<ProductDto> createProductWithCategory(@RequestBody ProductDto productDto, @PathVariable String categoryId) {
+        ProductDto productwithCategory = this.productService.createWithCategory(productDto, categoryId);
+        return new ResponseEntity<>(productwithCategory, HttpStatus.CREATED);
     }
 
 
