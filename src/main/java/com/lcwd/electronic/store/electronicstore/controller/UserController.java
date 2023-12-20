@@ -82,6 +82,8 @@ public class UserController {
     }
 
     /**
+     * g
+     *
      * @param pageNumber
      * @param pageSize
      * @param sortBy
@@ -163,7 +165,6 @@ public class UserController {
 
     @GetMapping("/image/{userId}")
     public void serverUserImage(@PathVariable String userId, HttpServletResponse response) throws IOException {
-
         UserDto user = userService.getUserById(userId);
         logger.info("User image name: {}", user.getImagename());
         InputStream resource = fileService.getResource(imageUploadPath, user.getImagename());

@@ -37,6 +37,7 @@ public class ProductDto {
     private double descountprice;
     @ImageNameValid
     private String productImage;
+    private CategoryDto category;
 
 
 

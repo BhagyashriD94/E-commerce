@@ -72,8 +72,6 @@ public class UserServiceImpl implements UserService {
         logger.info("completed the dao call for retriving user data by userId{}:", userId);
         return this.modelMapper.map(user, UserDto.class);
     }
-
-
     @Override
     public PageableResponse<UserDto> getAllUser(int pageNumber, int pageSize, String sortBy, String sortDir) {
         Sort sort = (sortBy.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());

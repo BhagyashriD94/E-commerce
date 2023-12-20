@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.doNothing;
@@ -87,6 +88,7 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").exists());
     }
+
     @Test
     public void getUserByIdTest() throws Exception {
         String userId= user.getUserId();

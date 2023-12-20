@@ -2,12 +2,11 @@ package com.lcwd.electronic.store.electronicstore.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,6 +34,9 @@ public class Product {
     private double descountprice;
     @Column(name="product_image")
     private String productImage;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="category_id")
+    private Category category;
 
 
 
