@@ -123,4 +123,13 @@ public class ProductServiceImpl implements ProductService {
         Product product1 = this.productRepository.save(product);
         return this.modelMapper.map(product1, ProductDto.class);
     }
+
+    @Override
+    public ProductDto updateCategory(String productId, String categoryId) {
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException(AppConstant.Not_Found));
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException(AppConstant.Not_Found));
+        product.setCategory(category);
+        Product saved = productRepository.save(product);
+        return modelMapper.map(saved,ProductDto.class);
+    }
 }

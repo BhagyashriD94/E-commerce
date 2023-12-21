@@ -151,11 +151,16 @@ public class CategoryController {
         response.setContentType(MediaType.IMAGE_PNG_VALUE);
         StreamUtils.copy(resource, response.getOutputStream());
     }
-
     @PostMapping("/categories/{categoryId}/products")
     public ResponseEntity<ProductDto> createProductWithCategory(@RequestBody ProductDto productDto, @PathVariable String categoryId) {
         ProductDto productwithCategory = this.productService.createWithCategory(productDto, categoryId);
         return new ResponseEntity<>(productwithCategory, HttpStatus.CREATED);
+    }
+    @PutMapping("/category/{categoryId}/product/{productId}")
+    public ResponseEntity<ProductDto> updateCategoryOfProduct(@PathVariable String categoryId,
+                                                              @PathVariable String productId){
+        ProductDto productDto = productService.updateCategory(productId, categoryId);
+        return new ResponseEntity<>(productDto,HttpStatus.OK);
     }
 
 
