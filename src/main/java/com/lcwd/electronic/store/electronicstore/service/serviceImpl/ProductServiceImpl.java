@@ -123,7 +123,6 @@ public class ProductServiceImpl implements ProductService {
         Product product1 = this.productRepository.save(product);
         return this.modelMapper.map(product1, ProductDto.class);
     }
-
     @Override
     public ProductDto updateCategory(String productId, String categoryId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException(AppConstant.Not_Found));
@@ -131,5 +130,13 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(category);
         Product saved = productRepository.save(product);
         return modelMapper.map(saved,ProductDto.class);
+    }
+    @Override
+    public PageableResponse<ProductDto> getAllOfCategory(String categoryId,int pageNumber, int pageSize, String sortBy, String sortDir) {
+        Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException(AppConstant.Not_Found));
+        Sort sort = (sortBy.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
+        Pageable p = PageRequest.of(pageNumber, pageSize, sort);
+        Page<Product> page = productRepository.findByCategory(category,p);
+        return Helper.getPageableResponse(page,ProductDto.class);
     }
 }
