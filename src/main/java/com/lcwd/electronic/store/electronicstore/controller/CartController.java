@@ -33,4 +33,10 @@ public class CartController {
         ApiResponse apiResponse = ApiResponse.builder().message("cart is empty now").success(true).status(HttpStatus.OK).build();
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
+    @GetMapping("/{userId}")
+    public ResponseEntity<CartDto> getCartByUser(@PathVariable String userId){
+        CartDto cartDto = cartService.getCartByUser(userId);
+        return new ResponseEntity<>(cartDto, HttpStatus.OK);
+    }
+
 }

@@ -11,7 +11,7 @@ public interface CartService {
 
     void clearCart(String userId);
 
-//    CartDto getCartByUser(String userId);
+    CartDto getCartByUser(String userId);
 
 
 }
