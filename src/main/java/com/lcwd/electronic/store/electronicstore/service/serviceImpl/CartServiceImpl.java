@@ -79,13 +79,13 @@ public class CartServiceImpl implements CartService {
         CartItem cartItem1 = cartItemRepository.findById(cartItem).orElseThrow(() -> new ResourceNotFoundException(AppConstant.Not_Found));
         cartItemRepository.delete(cartItem1);
     }
-//    @Override
-//    public void clearCart(String userId) {
-//        User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(AppConstant.Not_Found));
-//        Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new ResourceNotFoundException(AppConstant.Not_Found));
-//        cart.getItem().clear();
-//        cartRepository.save(cart);
-//    }
+    @Override
+    public void clearCart(String userId) {
+        User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(AppConstant.Not_Found));
+        Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new ResourceNotFoundException(AppConstant.Not_Found));
+        cart.getItem().clear();
+        cartRepository.save(cart);
+    }
 //    @Override
 //    public CartDto getCartByUser(String userId) {
 //        User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(AppConstant.Not_Found));

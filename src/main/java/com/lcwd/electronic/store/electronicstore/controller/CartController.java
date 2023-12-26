@@ -27,4 +27,10 @@ public class CartController {
         ApiResponse apiResponse = ApiResponse.builder().message("cartItem is removed successfully").success(true).status(HttpStatus.OK).build();
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<ApiResponse> clearCart(@PathVariable String userId){
+        cartService.clearCart(userId);
+        ApiResponse apiResponse = ApiResponse.builder().message("cart is empty now").success(true).status(HttpStatus.OK).build();
+        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+    }
 }
