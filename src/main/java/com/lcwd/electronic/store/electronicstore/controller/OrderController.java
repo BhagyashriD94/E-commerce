@@ -22,12 +22,12 @@ public class OrderController {
         OrderDto order = orderService.createOrder(orderDto);
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
-//    @DeleteMapping("/order/{orderId}")
-//    public ResponseEntity<ApiResponse> removeorder(@PathVariable String orderId){
-//        orderService.removeOrder(orderId);
-//        ApiResponse apiResponse = ApiResponse.builder().message("order remove sucessfully").success(true).status(HttpStatus.OK).build();
-//        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
-//    }
+    @DeleteMapping("/order/{orderId}")
+    public ResponseEntity<ApiResponse> removeorder(@PathVariable String orderId){
+        orderService.removeOrder(orderId);
+        ApiResponse apiResponse = ApiResponse.builder().message("order remove sucessfully").success(true).status(HttpStatus.OK).build();
+        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+    }
 //    @GetMapping("/order/{userId}")
 //    public ResponseEntity<List<OrderDto>> getOrderByUser(@PathVariable String userId){
 //        List<OrderDto> orderOfUser = orderService.getOrderOfUser(userId);
