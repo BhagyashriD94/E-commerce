@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -34,6 +35,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Value("${user.profile.image.path}")
     private String imagePath;
     Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -42,6 +45,7 @@ public class UserServiceImpl implements UserService {
     public UserDto createUser(UserDto userDto) {
         String strId = UUID.randomUUID().toString();
         userDto.setUserId(strId);
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         logger.info("Initiated the dao call for saving user data");
         User user = this.modelMapper.map(userDto, User.class);
         User saveduser = this.userRepository.save(user);
