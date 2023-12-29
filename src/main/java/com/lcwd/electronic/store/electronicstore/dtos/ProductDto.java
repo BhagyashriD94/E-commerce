@@ -29,7 +29,7 @@ public class ProductDto {
     @NotNull
     private double price;
     @NotNull(message="please enter qantity")
-    private int quantity;
+    private Integer quantity;
     private Date addedDate;
     private boolean live;
     private boolean stock;

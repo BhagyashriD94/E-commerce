@@ -19,7 +19,7 @@ public class Cart {
     private Date createdAt;
     @OneToOne
     private User user;
-    @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<CartItem> item=new ArrayList<>();
 
 

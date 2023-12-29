@@ -25,7 +25,7 @@ public class Product {
     @Column(name="product_price")
     private double price;
     @Column(name="product_quantity")
-    private int quantity;
+    private Integer quantity;
     @Column(name="product_added_date")
     private Date addedDate;
     private boolean live;

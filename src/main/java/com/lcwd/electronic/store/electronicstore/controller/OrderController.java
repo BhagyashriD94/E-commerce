@@ -19,8 +19,8 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
     @PostMapping("/order")
-    public ResponseEntity<OrderDto> createOrder(@RequestBody CreateOrderRequest orderDto){
-        OrderDto order = orderService.createOrder(orderDto);
+    public ResponseEntity<OrderDto> createOrder(@RequestBody CreateOrderRequest request){
+        OrderDto order = orderService.createOrder(request);
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
     @DeleteMapping("/order/{orderId}")

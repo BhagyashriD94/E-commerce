@@ -67,7 +67,7 @@ public class CartServiceImpl implements CartService {
             return item;
         }).collect(Collectors.toList());
         if(!updated.get()) {
-            CartItem cartItem = CartItem.builder().quantity(quantity).totalPrice(quantity * product.getPrice()).cart(cart).product(product).build();
+            CartItem cartItem = CartItem.builder().quantity(quantity).totalPrice(quantity * product.getDescountprice()).cart(cart).product(product).build();
             cart.getItem().add(cartItem);
         }
         cart.setUser(user);
