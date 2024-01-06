@@ -17,9 +17,10 @@ public class CartController {
 
 
     /**
-     *
+     * @auther Bhagyashri
      * @param userId
      * @param request
+     * @apiNote create api to addItem to cart
      * @return
      */
 
@@ -30,6 +31,14 @@ public class CartController {
         return new ResponseEntity<>(cartDto, HttpStatus.CREATED);
     }
 
+    /**
+     * @auther Bhagyshri
+     * @param userId
+     * @param cartItemId
+     * @apiNote create api to removeItem from cart
+     * @return
+     */
+
     @DeleteMapping("/{userId}/item/{cartItemId}")
     public ResponseEntity<ApiResponse> removeItemFromCart(@PathVariable String userId,
                                                           @PathVariable Integer cartItemId) {
@@ -38,12 +47,26 @@ public class CartController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    /**
+     * @auther Bhagyashri
+     * @param userId
+     * @apiNote  create api to clear all cart
+     * @return
+     */
+
     @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponse> clearCart(@PathVariable String userId) {
         cartService.clearCart(userId);
         ApiResponse apiResponse = ApiResponse.builder().message("cart is empty now").success(true).status(HttpStatus.OK).build();
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
+
+    /**
+     * @auther Bhagyashri
+     * @param userId
+     * @apiNote create api to retrived cart data by userId
+     * @return
+     */
 
     @GetMapping("/{userId}")
     public ResponseEntity<CartDto> getCartByUser(@PathVariable String userId) {
