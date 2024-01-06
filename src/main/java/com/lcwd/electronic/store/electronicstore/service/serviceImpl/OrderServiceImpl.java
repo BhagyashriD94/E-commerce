@@ -13,6 +13,8 @@ import com.lcwd.electronic.store.electronicstore.repository.OrderRepository;
 import com.lcwd.electronic.store.electronicstore.repository.UserRepository;
 import com.lcwd.electronic.store.electronicstore.service.OrderService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,8 +40,11 @@ public class OrderServiceImpl implements OrderService {
     private CartRepository cartRepository;
     @Autowired
     private ModelMapper modelMapper;
+
+    Logger logger= LoggerFactory.getLogger(OrderServiceImpl.class);
     @Override
     public OrderDto createOrder(CreateOrderRequest orderDto) {
+        logger.info("Initiating dao call to save order data");
             String userId=orderDto.getUserId();
             String cardId=orderDto.getCardId();
         User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(AppConstant.Not_Found));
@@ -71,29 +76,34 @@ public class OrderServiceImpl implements OrderService {
         cart.getItem().clear();
         cartRepository.save(cart);
         Order savedorder = orderRepository.save(order);
+        logger.info("completed dao call to save order data");
         return this.modelMapper.map(savedorder,OrderDto.class);
     }
 
     @Override
     public void removeOrder(String orderId) {
+        logger.info("Initiating dao call to remove order data with orderId:{}",orderId);
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException(AppConstant.Not_Found));
+        logger.info("Completed dao call to remove order data with orderId:{}",orderId);
         orderRepository.delete(order);
     }
-
     @Override
     public List<OrderDto> getOrderOfUser(String userId) {
-
+        logger.info("Initiating dao call to retrived order data by user with userId:{}",userId);
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(AppConstant.Not_Found));
         List<Order> orders = orderRepository.findByUser(user);
         List<OrderDto> orderDto = orders.stream().map(order -> modelMapper.map(order, OrderDto.class)).collect(Collectors.toList());
+        logger.info("completed dao call to retrived order data by user with userId:{}",userId);
         return orderDto;
     }
 
     @Override
     public PageableResponse<OrderDto> getOrders(int pageNumber, int pageSize, String sortBy, String sortDir){
+        logger.info("Initiating dao call to retrived all order data");
         Sort sort=(sortBy.equalsIgnoreCase("desc"))?(Sort.by(sortBy).descending()):(Sort.by(sortBy).ascending());
         Pageable p=PageRequest.of(pageNumber,pageSize,sort);
         Page<Order> page = orderRepository.findAll(p);
+        logger.info("completed dao call to retrived all order data");
         return Helper.getPageableResponse(page,OrderDto.class);
     }
 }
