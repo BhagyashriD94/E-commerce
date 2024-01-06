@@ -1,19 +1,30 @@
 package com.lcwd.electronic.store.electronicstore.config;
 
+import com.lcwd.electronic.store.electronicstore.security.JwtAuthenticationFilter;
+import com.lcwd.electronic.store.electronicstore.security.JwtAuthonticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private JwtAuthenticationFilter authenticationFilter;
+    @Autowired
+    private JwtAuthonticationEntryPoint authonticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -32,12 +43,21 @@ public class SecurityConfig {
 //        return http.build();
         http.csrf()
                 .disable()
+                .csrf()
+                .disable()
                 .authorizeRequests()
+                .antMatchers("/auth/login")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .httpBasic();
-               return http.build();
+                .exceptionHandling()
+                .authenticationEntryPoint(authonticationEntryPoint)
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
@@ -49,8 +69,14 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
+
         return new BCryptPasswordEncoder();
     }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration builder) throws Exception {
+        return builder.getAuthenticationManager();
+    }
+
 
 
 }

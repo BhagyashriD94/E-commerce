@@ -1,15 +1,21 @@
 package com.lcwd.electronic.store.electronicstore.controller;
 
+import com.lcwd.electronic.store.electronicstore.dtos.JwtRequest;
+import com.lcwd.electronic.store.electronicstore.dtos.JwtResponse;
 import com.lcwd.electronic.store.electronicstore.dtos.UserDto;
+import com.lcwd.electronic.store.electronicstore.exception.BadApiRequest;
+import com.lcwd.electronic.store.electronicstore.security.JwtHelper;
+import com.lcwd.electronic.store.electronicstore.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -20,6 +26,12 @@ public class AuthController {
     private UserDetailsService userDetailsService;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private AuthenticationManager manager;
+    @Autowired
+    private JwtHelper jwtHelper;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/current")
     public ResponseEntity<UserDto> getCurrentUser(Principal principal){
@@ -27,4 +39,23 @@ public class AuthController {
         UserDto userDto = this.modelMapper.map(userDetailsService.loadUserByUsername(name), UserDto.class);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
+    @PostMapping("/login")
+    public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request){
+     this.doAuthenticate(request.getEmail(),request.getPassword());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+        String token = this.jwtHelper.generateToken(userDetails);
+        UserDto userDto = modelMapper.map(userDetails,UserDto.class);
+        JwtResponse response = JwtResponse.builder().jwtToken(token).user(userDto).build();
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    private void doAuthenticate(String email,String password) {
+        UsernamePasswordAuthenticationToken authentication=new UsernamePasswordAuthenticationToken(email,password);
+        try{
+            manager.authenticate(authentication);
+        }catch(BadCredentialsException e){
+            throw new BadApiRequest("Invalid username or password Exception");
+        }
+    }
+
 }
